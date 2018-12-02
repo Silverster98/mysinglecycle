@@ -1,13 +1,3 @@
-# mips 单周期个人设计
-相比之前的单周期项目，本项目实现自行设计数据通路，并且更加规范的编写代码，实现更多指令。之前的那个是参考老师给的示例代码进行练手的。
-
-所有代码在 mysinglecycle.srcs 目录下，clone 到本地后，选择 vivado 打开 mysinglecycle.xpr 这个文件就可以了。
-
-### IF module
-inst fetch 模块是由 pc,npc,im 三个模块构成，这三个模块共同实现 instruction fetch 的功能。
-
-testbench 测试代码：
-```
 `timescale 1ns / 1ps
 module testbench();
     reg clk;
@@ -40,7 +30,3 @@ module testbench();
     always
         #20 clk = ~clk; // colck
 endmodule
-
-```
-
-具体各模块代码详见 srcs 目录下文件。
