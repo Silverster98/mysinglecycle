@@ -1,6 +1,7 @@
 `timescale 1ns / 1ps
 /**
 * dm module
+* (.addr(), .wdata(), .w_en(), .clk(), .dout())
 */
 module dm(
     input wire[11:2] addr,

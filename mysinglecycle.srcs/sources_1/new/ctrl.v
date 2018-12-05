@@ -2,7 +2,8 @@
 `include "instruction_head.v"
 /**
 * ctrl module
-* 
+* (.op(), .sa(), .func(), .beqout(), .alu_ctrl(), .npc_ctrl(), .reg_w_en(), .dm_w_en(), 
+.ext_op(), .reg_rd_sel(), .reg_wdata_sel(), .alu_in_sel())
 */
 module ctrl(
     input wire[5:0] op,                     // operate code
@@ -14,7 +15,10 @@ module ctrl(
     output wire[`NPC_CTRL-1:0] npc_ctrl,
     output wire                reg_w_en,
     output wire                dm_w_en,
-    output wire[`EXT-1:0]      ext_op       // extend option
+    output wire[`EXT-1:0]      ext_op,      // extend option
+    output wire[1:0]           reg_rd_sel,
+    output wire[1:0]           reg_wdata_sel,
+    output wire                alu_in_sel
     );
     
     wire typeR,sll,add,sub,_and,addiu,lw,sw,lui,ori,beq,j,jal;
@@ -34,6 +38,7 @@ module ctrl(
     assign j     = (op == `INST_J) ? 1 : 0;
     assign jal   = (op == `INST_JAL) ? 1 : 0;
     
+    
     assign alu_ctrl = (add || addiu || lw || sw) ? `ALU_OP_ADD : 
                       (sub || beq) ? `ALU_OP_SUB : 
                       (_and) ? `ALU_OP_AND : 
@@ -43,12 +48,18 @@ module ctrl(
     assign npc_ctrl = (j || jal) ? `NPC_OP_IMM26 : 
                       (beq) ? `NPC_OP_IMM16 :
                       `NPC_OP_ADD4;
-    assign reg_w_en = (typeR || addiu || lw || lui || ori) ? 1 : 0;
+    assign reg_w_en = (typeR || addiu || lw || lui || ori || jal) ? 1 : 0;
     assign dm_w_en  = (sw) ? 1 : 0;
     assign ext_op   = (lui) ? `EXT_SL16 : 
                       (addiu || lw || sw) ? `EXT_SIGN :
                       `EXT_UNSIGN;
-    
-    
-    
+    assign reg_rd_sel = (jal) ? 2'b00 : 
+                        (addiu || lw || lui || ori) ? 2'b01 : 
+                        (typeR) ? 2'b10 :
+                        2'b11;
+    assign reg_wdata_sel = (typeR || addiu || ori) ? 2'b00 : 
+                           (lw) ? 2'b01 :
+                           (jal) ? 2'b10 :
+                           2'b11;
+    assign alu_in_sel = (typeR || beq) ? 1'b0 : 1'b1;
 endmodule
