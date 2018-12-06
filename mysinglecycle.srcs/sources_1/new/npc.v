@@ -10,11 +10,13 @@ module npc(
     input wire[25:0]  imm_26,   // the 26-bit immediate num
     input wire[1:0]   npc_op,   // option of npc
     
-    output wire[31:0] npc       // output of npc to change pc
+    output wire[31:0] npc,      // output of npc to change pc
+    output wire[31:0] pc_4
     );
     
-    assign npc = (npc_op == `NPC_OP_ADD4) ? pc + 4 : // pc + 4
+    assign pc_4 = pc + 4;
+    assign npc = (npc_op == `NPC_OP_ADD4) ? pc_4 : // pc + 4
                  (npc_op == `NPC_OP_IMM26) ? {pc[31:28], imm_26, 2'b00} : // pc <- (imm_26 << 2)
-                 (npc_op == `NPC_OP_IMM16) ? pc + 4 + {{14{imm_16[15]}}, imm_16, 2'b00} : // pc + 4 + unsigned(imm_16 << 2)
+                 (npc_op == `NPC_OP_IMM16) ? pc_4 + {{14{imm_16[15]}}, imm_16, 2'b00} : // pc + 4 + unsigned(imm_16 << 2)
                  32'h00000000;
 endmodule

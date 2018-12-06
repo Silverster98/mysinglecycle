@@ -46,11 +46,11 @@ module mips(
     wire       beqout;  // output of alu's zero answer single
     
     wire[31:0] dout; // dm output
-    wire[31:0] pc_8; // IF output of pc+8
     
+    wire[31:0] pc_4; // IF output of pc+4
     
     // if instantiation
-    inst_fetch U_IF(.rst(rst), .clk(clk), .imm_16(imm16), .imm_26(imm26), .op(if_op), .inst(inst));
+    inst_fetch U_IF(.rst(rst), .clk(clk), .imm_16(imm16), .imm_26(imm26), .op(if_op), .inst(inst), .pc_4(pc_4));
     
     // extend instantiation
     extend U_EXT(.imm_16(imm16), .ext_op(ext_op), .dout(ext_out));
@@ -59,7 +59,7 @@ module mips(
     wire[4:0] mux4_5out;
     wire[31:0] mux4_32out;
     mux_4_5 U_MUX4_5(.in1(5'b11111), .in2(rt), .in3(rd), .sel(reg_rd_sel), .out(mux4_5out));
-    mux_4_32 U_MUX4_32(.in1(alu_out), .in2(dout), .in3(pc_8), .in4(ext_out), .sel(reg_wdata_sel), .out(mux4_32out));
+    mux_4_32 U_MUX4_32(.in1(alu_out), .in2(dout), .in3(pc_4), .in4(ext_out), .sel(reg_wdata_sel), .out(mux4_32out));
     regfile U_RF(.clk(clk), .rs1_i(rs), .rs2_i(rt), .rd_i(mux4_5out), .w_en(reg_w_en), .w_data(mux4_32out), .rs1_o(rs1_out), .rs2_o(rs2_out));
     
     // alu instantiation
