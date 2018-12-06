@@ -26,7 +26,7 @@ module ctrl(
     assign sll   = (typeR && func == `INST_SLL) ? 1 : 0;
     assign add   = (typeR && func == `INST_ADD) ? 1 : 0;
     assign sub   = (typeR && func == `INST_SUB) ? 1 : 0;
-    assign _and  = (typeR && func == `INST_SUB) ? 1 : 0;
+    assign _and  = (typeR && func == `INST_AND) ? 1 : 0;
     
     assign addiu = (op == `INST_ADDIU) ? 1 : 0;
     assign lw    = (op == `INST_LW) ? 1 : 0;
