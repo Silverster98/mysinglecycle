@@ -3,24 +3,31 @@ module testbench();
     reg clk;
     reg rst;
     
-    reg[4:0] rs1,rs2,rd;
-    reg wen;
-    reg[31:0] wdata;
-    wire[31:0] rs1o,rs2o;
-    regfile regfile(.clk(clk), .rs1_i(rs1), .rs2_i(rs2), .rd_i(rd), .w_en(wen), .w_data(wdata), .rs1_o(rs1o), .rs2_o(rs2o));
-
+    reg[31:0] A,B;
+    wire[31:0] C;
+    reg[4:0] s;
+    reg[`ALU_CTRL-1:0] alu_ctrl;
+    wire beqout;
+    
+    alu alu(.A(A), .B(B), .alu_ctrl(alu_ctrl), .s(s), .C(C), .beqout(beqout));
     initial begin
         rst = 1;
         clk = 0;
-        $readmemh("/home/silvester/project/mysinglecycle/instfile.txt", regfile.gpr);        
-        rs1 = 5'b00000;
-        rs2 = 5'b00001;
-        #10 rs1 = 5'b00010;
-        #10 rd  = 5'b00011;
-        #10 wdata = 32'h000000ff;
-        wen = 1;
-        #40;
-        
+        A = 32'h001f;
+        B = 32'h0001;
+        s = 5'h3;
+        alu_ctrl = 3'b000;
+        #10
+        B = 32'h001f;
+        alu_ctrl = 3'b001;
+        #10
+        B = 32'h002a;
+        alu_ctrl = 3'b100;
+        #10
+        alu_ctrl = 3'b101;
+        #10
+        alu_ctrl = 3'b010;
+        #10
         $stop;
     end
     
