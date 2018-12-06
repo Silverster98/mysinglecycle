@@ -4,26 +4,31 @@ module testbench();
     reg rst;
     
     reg[15:0] imm_16;
-    reg[25:0] imm_26;
-    reg[1:0]  im_op;
-    
-    wire[31:0] inst;
-    
-    inst_fetch MIPS_IF(.rst(rst), .clk(clk), .imm_16(imm_16), .imm_26(imm_26), .op(im_op), .inst(inst));
-    
+    reg[1:0]  ext_op;
+    wire[31:0] extout;
+    extend ext(.imm_16(imm_16), .ext_op(ext_op), .dout(extout));
+
     initial begin
-        $readmemh("/home/silvester/project/mysinglecycle/instfile.txt", MIPS_IF.MIPS_IM.im); // read test inst
         rst = 1;
         clk = 0;
-        im_op = 2'b00; // test im_op = NPC_OP_ADD4
-        #30 rst = 0;   // reset disable
-        #140;
-        imm_16 = 'h0002; // test im_op = NPC_OP_IMM16
-        im_op = 2'b10;
-        #40
-        imm_26 = 'h0000005; // test im_op = NPC_OP_IMM26
-        im_op = 2'b01;
-        #40
+        
+        ext_op = 2'b00;
+        imm_16 = 16'h0017;
+        #10 ext_op = 2'b01;
+        #10 ext_op = 2'b10;
+        
+        #10;
+        ext_op = 2'b00;
+        imm_16 = 16'hf113;
+        #10 ext_op = 2'b01;
+        #10 ext_op = 2'b10;
+        
+        #10;
+        ext_op = 2'b00;
+        imm_16 = 16'h0000;
+        #10 ext_op = 2'b01;
+        #10 ext_op = 2'b10;
+        #10;
         $stop;
     end
     
