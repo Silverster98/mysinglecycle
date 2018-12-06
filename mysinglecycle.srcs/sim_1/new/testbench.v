@@ -10,7 +10,7 @@ module testbench();
         // read instruction
         $readmemh("/home/silvester/project/mysinglecycle/instfile.txt", my_mips.U_IF.MIPS_IM.im);
         #30 rst = 0;
-        #170;
+        #210;
         $stop;
     end
     
