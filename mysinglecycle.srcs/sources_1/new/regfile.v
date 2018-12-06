@@ -18,8 +18,8 @@ module regfile(
     
     reg[31:0] gpr[31:0]; // 32 gpr
     
-    assign rs1_o = gpr[rs1_i]; // 
-    assign rs2_o = gpr[rs2_i]; // 
+    assign rs1_o = (rs1_i == 0) ? 32'h00000000 : gpr[rs1_i]; // 
+    assign rs2_o = (rs2_i == 0) ? 32'h00000000 : gpr[rs2_i]; // 
     
     always @ (posedge clk) begin
         if (w_en) begin
