@@ -3,6 +3,15 @@
 
 所有代码在 mysinglecycle.srcs 目录下，clone 到本地后，选择 vivado 打开 mysinglecycle.xpr 这个文件就可以了。
 
+##### 整个 mips 架构图如下
+if module
+
+![./img/if.jpg]
+
+mips module
+
+![./img/mips.jpg]
+
 ### IF module
 inst fetch 模块是由 pc,npc,im 三个模块构成，这三个模块共同实现 instruction fetch 的功能。
 
