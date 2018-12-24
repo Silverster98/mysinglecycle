@@ -5,10 +5,13 @@
 */
 module mips(
     input wire clk,
-    input wire rst
+    input wire rst,
+    input wire[31:0] inst,
+    
+    output wire[31:0] pc
     );
     
-    wire[31:0] inst;
+//    wire[31:0] inst;
     
     wire[5:0]  op;
     wire[15:0] imm16;
@@ -50,7 +53,7 @@ module mips(
     wire[31:0] pc_4; // IF output of pc+4
     
     // if instantiation
-    inst_fetch U_IF(.rst(rst), .clk(clk), .imm_16(imm16), .imm_26(imm26), .op(if_op), .inst(inst), .pc_4(pc_4));
+    inst_fetch U_IF(.rst(rst), .clk(clk), .imm_16(imm16), .imm_26(imm26), .op(if_op), .pc_4(pc_4), .pc_out(pc));
     
     // extend instantiation
     extend U_EXT(.imm_16(imm16), .ext_op(ext_op), .dout(ext_out));
