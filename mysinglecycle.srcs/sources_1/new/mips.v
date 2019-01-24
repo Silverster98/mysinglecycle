@@ -8,7 +8,10 @@ module mips(
     input wire rst,
     input wire[31:0] inst,
     
-    output wire[31:0] pc
+    output wire[31:0] pc,
+    output wire[31:0] wout_addr,
+    output wire[31:0] wout_data,
+    output wire       wout_en
     );
     
 //    wire[31:0] inst;
@@ -36,6 +39,7 @@ module mips(
     wire[`EXT-1:0] ext_op;
     wire reg_w_en;
     wire dm_w_en;
+    assign wout_en = dm_w_en;
     wire[`ALU_CTRL-1:0] alu_ctrl;
     wire[1:0] reg_rd_sel;
     wire[1:0] reg_wdata_sel;
@@ -43,9 +47,12 @@ module mips(
     
     wire[31:0] ext_out; // output of extend module
     
-    wire[31:0] rs1_out,rs2_out; // output regfile
+    wire[31:0] rs1_out, rs2_out; // output regfile
+    assign wout_data = rs2_out;
     
     wire[31:0] alu_out; // output of alu's answer
+    assign wout_addr = alu_out;
+    
     wire       beqout;  // output of alu's zero answer single
     
     wire[31:0] dout; // dm output

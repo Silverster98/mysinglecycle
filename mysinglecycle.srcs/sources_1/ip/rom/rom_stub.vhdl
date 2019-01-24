@@ -1,7 +1,7 @@
 -- Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2018.1 (lin64) Build 2188600 Wed Apr  4 18:39:19 MDT 2018
--- Date        : Tue Dec 25 13:13:33 2018
+-- Date        : Thu Jan 24 15:30:25 2019
 -- Host        : ubuntu running 64-bit Ubuntu 16.04.5 LTS
 -- Command     : write_vhdl -force -mode synth_stub
 --               /home/silvester/project/mysinglecycle/mysinglecycle.srcs/sources_1/ip/rom/rom_stub.vhdl
